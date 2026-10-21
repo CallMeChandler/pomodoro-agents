@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pomodoro</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <main>
+      <section class="timer" aria-labelledby="mode">
+        <p id="current-task" class="current-task"></p>
+        <h1 id="mode" class="mode">Work</h1>
+        <p id="countdown" class="countdown" role="timer" aria-live="off">25:00</p>
+        <div class="controls">
+          <button id="start" type="button">Start</button>
+          <button id="pause" type="button">Pause</button>
+          <button id="reset" type="button">Reset</button>
+        </div>
+        <p class="sessions">
+          <span id="sessions-dots" aria-hidden="true"></span>
+          <span id="sessions-label"></span>
+        </p>
+      </section>
+
+      <section class="tasks" aria-labelledby="tasks-heading">
+        <h2 id="tasks-heading">Tasks</h2>
+        <form id="add-form" autocomplete="off">
+          <label for="task-title" class="visually-hidden">New task</label>
+          <input id="task-title" type="text" placeholder="What are you working on?" maxlength="200" />
+          <button type="submit">Add</button>
+        </form>
+        <ul id="task-list"></ul>
+        <p id="empty-tasks" class="empty">No tasks yet.</p>
+      </section>
+    </main>
+
+    <template id="task-item">
+      <li>
+        <input type="checkbox" class="done" />
+        <span class="title"></span>
+        <button type="button" class="select">Select</button>
+        <button type="button" class="delete" aria-label="Delete task">Delete</button>
+      </li>
+    </template>
+
+    <script type="module" src="src/ui.js"></script>
+  </body>
+</html>

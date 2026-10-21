@@ -74,6 +74,47 @@ test("pause when not running is a no-op", () => {
   assert.equal(pause(idle, T0), idle);
 });
 
+test("pause exactly at endsAt finishes the phase once", () => {
+  const running = frozen(start(initialState(), T0));
+  const s = pause(running, running.endsAt);
+  assert.equal(s.mode, "shortBreak");
+  assert.equal(s.status, "idle");
+  assert.equal(s.remainingMs, SHORT_BREAK_MS);
+  assert.equal(s.endsAt, null);
+  assert.equal(s.completedWork, 1);
+  // A later tick must not count the session again.
+  assert.equal(tick(s, running.endsAt + 2_000_000), s);
+});
+
+test("pause after endsAt finishes the phase once", () => {
+  const running = frozen(start(initialState(), 0));
+  const s = pause(running, running.endsAt + 1);
+  assert.equal(s.mode, "shortBreak");
+  assert.equal(s.status, "idle");
+  assert.equal(s.completedWork, 1);
+  assert.deepEqual(tick(s, 2_000_000), s);
+});
+
+test("pause after the 4th work session's endsAt loads the long break", () => {
+  let s = initialState();
+  for (let i = 0; i < 6; i++) s = finish(s, T0);
+  const running = start(s, T0);
+  const p = pause(running, running.endsAt + 5000);
+  assert.equal(p.mode, "longBreak");
+  assert.equal(p.status, "idle");
+  assert.equal(p.remainingMs, LONG_BREAK_MS);
+  assert.equal(p.completedWork, 4);
+});
+
+test("pause 1 ms before endsAt still pauses normally", () => {
+  const running = frozen(start(initialState(), T0));
+  const p = pause(running, running.endsAt - 1);
+  assert.equal(p.mode, "work");
+  assert.equal(p.status, "paused");
+  assert.equal(p.remainingMs, 1);
+  assert.equal(p.completedWork, 0);
+});
+
 test("pause/resume preserves remaining time", () => {
   let s = start(initialState(), T0);
   s = pause(s, T0 + 10 * 60_000);

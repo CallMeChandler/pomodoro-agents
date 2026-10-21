@@ -37,6 +37,9 @@ export function start(state, now) {
 
 export function pause(state, now) {
   if (state.status !== "running") return state;
+  // At or after endsAt the phase is already over: finish it instead of
+  // freezing a 0 ms paused phase that tick would never complete.
+  if (now >= state.endsAt) return tick(state, now);
   return {
     ...state,
     status: "paused",

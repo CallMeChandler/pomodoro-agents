@@ -101,9 +101,16 @@ function renderTasks() {
   els.empty.hidden = state.tasks.length > 0;
 }
 
-els.start.addEventListener("click", () => commit(start(state, Date.now())));
-els.pause.addEventListener("click", () => commit(pause(state, Date.now())));
-els.reset.addEventListener("click", () => commit(reset(state)));
+// Settle a phase that ended since the last 250 ms tick before applying a click,
+// so Start/Reset can't restart or discard a session that has already finished.
+function act(transition) {
+  const now = Date.now();
+  commit(transition(tick(state, now), now));
+}
+
+els.start.addEventListener("click", () => act(start));
+els.pause.addEventListener("click", () => act(pause));
+els.reset.addEventListener("click", () => act(reset));
 
 els.form.addEventListener("submit", (event) => {
   event.preventDefault();

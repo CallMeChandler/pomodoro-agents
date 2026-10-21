@@ -1,0 +1,197 @@
+:root {
+  --bg: #faf7f5;
+  --fg: #1f1d1b;
+  --muted: #6b6560;
+  --accent: #c2410c;
+  --accent-break: #15803d;
+  --card: #ffffff;
+  --border: #e7e1dc;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #181614;
+    --fg: #f1ece8;
+    --muted: #a39b94;
+    --accent: #fb923c;
+    --accent-break: #4ade80;
+    --card: #221f1c;
+    --border: #3a3430;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.timer {
+  text-align: center;
+}
+
+.current-task {
+  margin: 0;
+  color: var(--muted);
+  min-height: 1.5em;
+  overflow-wrap: anywhere;
+}
+
+.current-task.has-task {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.mode {
+  margin: 0.25rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+body[data-mode="shortBreak"] .mode,
+body[data-mode="longBreak"] .mode {
+  color: var(--accent-break);
+}
+
+.countdown {
+  margin: 0.25rem 0 1rem;
+  font-size: clamp(3.5rem, 18vw, 5.5rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+button {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+#start,
+#add-form button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.sessions {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+#sessions-dots {
+  letter-spacing: 0.25em;
+  margin-right: 0.25rem;
+}
+
+.tasks h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+#add-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#add-form input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+#task-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+#task-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--border);
+}
+
+#task-list li:first-child {
+  border-top: 0;
+}
+
+#task-list .title {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+#task-list li.done .title {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+#task-list li.current .title {
+  font-weight: 600;
+}
+
+#task-list button {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.empty {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
